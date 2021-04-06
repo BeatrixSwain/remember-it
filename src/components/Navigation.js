@@ -7,7 +7,7 @@ class Navigation extends Component{
             <div className="container-fluid">
               <a className="navbar-brand" href="#">
                   {this.props.title}  
-                  <span className="bagde-remember badge rounded-pill bg-danger"> {this.props.numTareas}  </span>
+                  {this.props.numTareas!=null?<span className="bagde-remember badge rounded-pill bg-danger"> {this.props.numTareas}  </span>:''}
               </a>
               
               <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">

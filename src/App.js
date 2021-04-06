@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
-import logo from './logo.svg';
+import logo from './sun.svg';
 import './App.css';
 import Navigation from './components/Navigation'
 import {todos} from './todos.json'
 import { render } from '@testing-library/react';
+import TodoForm from './components/TodoForm';
 
 class App extends Component{
   constructor(){
@@ -11,36 +12,57 @@ class App extends Component{
       this.state = {
           todos
       }; //Va a crear el estado de este componente.
+      this.handleAddTodo = this.handleAddTodo.bind(this);
+
   }
-  
+  removeTodo(index) {
+    this.setState({
+      todos: this.state.todos.filter((e, i) => {
+        return i !== index
+      })
+    });
+  }
+
+  handleAddTodo(todo) {
+    this.setState({
+      todos: [...this.state.todos, todo]
+    })
+  }
+
   render(){
-      const tareas = this.state.todos.map((todo, i)=>{
-      return(
-        <div className="col-md-4">
-        <div className="card mt-4">
-          <div className="card-header">
-            <h3>{todo.title}</h3>           
-            <span className="badge bg-warning"> {todo.priority}</span>
-          </div>
-          <div className="card-body">
-         
-            <h5 className="card-title"><mark>{todo.responsible}</mark></h5>
-            <p className="card-text">{todo.description}</p>
-          </div>
-        </div>
-        </div>
-      )
-    });//todos
+      const todos = this.state.todos.map((todo, i)=>{
+          return(
+            <div className="col-md-4">
+            <div className="card mt-4">
+              <div className="card-header">
+                <h3>{todo.title}</h3>           
+                <span className={`badge bg-${todo.priority=='high'?"danger":todo.priority=='medium'?"warning":"success"}`}> {todo.priority}</span>
+              </div>
+              <div className="card-body">
+                  <p className="card-text">{todo.description}</p>
+                  <h5 className="card-title text-end"><mark>{todo.responsible}</mark></h5>
+              </div>
+            </div>
+            </div>
+          )
+      });//todos
     return (
       <div className="App">
           <Navigation title="Remember-it" numTareas={this.state.todos.length}/>
         <header className="App-header">
         
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1>Rolling</h1>
+         
           <div className="container">
-            <div className="row mt-4">
-                { tareas }
+            <div className="row">
+              <div className="col-md-4 text-center">
+              < img src={logo} className="App-logo" alt="logo" />
+                <TodoForm onAddTodo={this.handleAddTodo}></TodoForm>
+              </div>
+              <div className="col-md-8">
+              <div className="row">
+                { todos }
+                </div>
+            </div>
             </div>
           </div>
         </header>
